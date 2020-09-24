@@ -1,3 +1,9 @@
+npy/
+wandb/
+Copy_of_image_captioning (1).ipynb
+test.py
+train2014/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
