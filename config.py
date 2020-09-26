@@ -17,7 +17,7 @@ def hyperparams():
 
 
     cpt = True
-    wb = True
+    wb = False
     npy = False
 
     return npy_dir, EPOCHS, sample_size, BATCH_SIZE, BUFFER_SIZE, embedding_dim, units, top_k, features_shape, attention_features_shape, cpt, wb, npy

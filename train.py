@@ -18,6 +18,7 @@ from tqdm import tqdm, trange
 import wandb
 # import click
 import argparse
+import io
 
 npy_dir, EPOCHS, sample_size, BATCH_SIZE, BUFFER_SIZE, embedding_dim, units, top_k, features_shape, attention_features_shape, cpt, wb, npy = hyperparams()
 
@@ -152,6 +153,14 @@ train_seqs = tokenizer.texts_to_sequences(train_captions)
 tokenizer.word_index['<pad>'] = 0
 tokenizer.index_word[0] = '<pad>'
 
+# saving tokenizer
+# with open('tokenizer.pickle', 'wb') as handle:
+#     pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+tokenizer_json = tokenizer.to_json()
+with io.open('tokenizer.json', 'w', encoding='utf-8') as f:
+    f.write(json.dumps(tokenizer_json, ensure_ascii=False))
+
+exit()
 # Create the tokenized vectors
 train_seqs = tokenizer.texts_to_sequences(train_captions)
 
