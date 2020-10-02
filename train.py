@@ -1,7 +1,6 @@
 from helper import *
 from config import hyperparams
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
@@ -19,6 +18,7 @@ import wandb
 # import click
 import argparse
 import io
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 npy_dir, EPOCHS, sample_size, BATCH_SIZE, BUFFER_SIZE, embedding_dim, units, top_k, features_shape, attention_features_shape, cpt, wb, npy = hyperparams()
 
@@ -143,24 +143,32 @@ if npy:
 
 
 ########################################------4------# preprocessing captions
+if not os.path.isfile('tokenizer.json'):
 # # Choose the top 5000 words from the vocabulary
-tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=top_k,
-                                                  oov_token="<unk>",
-                                                  filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ')
-tokenizer.fit_on_texts(train_captions)
-train_seqs = tokenizer.texts_to_sequences(train_captions)
+    tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=top_k,
+                                                    oov_token="<unk>",
+                                                    filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ')
+    tokenizer.fit_on_texts(train_captions)
+    train_seqs = tokenizer.texts_to_sequences(train_captions)
 
-tokenizer.word_index['<pad>'] = 0
-tokenizer.index_word[0] = '<pad>'
+    tokenizer.word_index['<pad>'] = 0
+    tokenizer.index_word[0] = '<pad>'
 
-# saving tokenizer
-# with open('tokenizer.pickle', 'wb') as handle:
-#     pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
-tokenizer_json = tokenizer.to_json()
-with io.open('tokenizer.json', 'w', encoding='utf-8') as f:
-    f.write(json.dumps(tokenizer_json, ensure_ascii=False))
+    # saving tokenizer
+    # with open('tokenizer.pickle', 'wb') as handle:
+    #     pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    tokenizer_json = tokenizer.to_json()
 
-exit()
+    with io.open('tokenizer.json', 'w', encoding='utf-8') as f:
+        f.write(json.dumps(tokenizer_json, ensure_ascii=False))
+
+else: # load the tokenizer file
+    with open('tokenizer.json') as f:
+        datax = json.load(f)
+        tokenizer = tf.keras.preprocessing.text.tokenizer_from_json(datax)
+        del datax
+
+
 # Create the tokenized vectors
 train_seqs = tokenizer.texts_to_sequences(train_captions)
 
