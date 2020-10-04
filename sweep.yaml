@@ -1,0 +1,18 @@
+method: bayes
+metric:
+  name: loss
+  goal: minimize
+parameters:
+  batch_size:
+    distribution: int_uniform
+    max: 512
+    min: 256
+  buffer_size:
+    distribution: int_uniform
+    max: 2000
+    min: 500
+  epochs:
+    distribution: int_uniform
+    max: 2
+    min: 1
+program: train.py
