@@ -119,7 +119,7 @@ if npy:
     i = 0
     for img, path in tqdm(image_dataset):
         i += 1
-        if i % 500 == 0: sleep(60)
+        if i % 500 == 0: sleep(20)
         batch_features = image_features_extract_model(img)
         batch_features = tf.reshape(batch_features,
                                     (batch_features.shape[0], -1, batch_features.shape[3]))
