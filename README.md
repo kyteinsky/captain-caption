@@ -40,7 +40,7 @@ that's it!
 
 
 
-## In the case you are looking to just check out the performace of the model -- not done yet
+## In the case you are looking to just check out the performace of the model -- not ready yet
 - put images to caption in `test_images` folder
 - run `python inference.py` with `npy = False` in `config.py`
 
